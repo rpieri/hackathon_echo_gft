@@ -1,0 +1,112 @@
+openapi: 3.0.3
+info:
+  title: Swagger Echo - OpenAPI 3.0
+  version: 1.0.
+servers:
+  - url: https://localhost:5001
+tags:
+  - name: profiles
+    description: Get relevant influencer profiles
+paths:
+  /profiles:
+    get:
+      tags:
+        - profiles
+      summary: Returns influencer profiles
+      description: Returns informations about influencers on diferent type of social media
+      parameters:
+        - in: query
+          name: filter
+          description: Filter influencer profiles
+          required: false
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+      security:
+        - api_key: []
+  /profiles/{profileId}:
+    get:
+      tags:
+        - profiles
+      summary: Find influnce profile by ID
+      description: Returns a single influencer profile
+      parameters:
+        - name: profileId
+          in: path
+          description: ID of influencer profile to return
+          required: true
+          schema:
+            type: string
+      responses:
+        # "200":
+        #   description: successful operation
+        #   content:
+        #     application/json:
+        #       schema:
+        #         $ref: "#/components/schemas/Pet"
+        #     application/xml:
+        #       schema:
+        #         $ref: "#/components/schemas/Pet"
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Pet not found
+      security:
+        - api_key: []
+        - petstore_auth:
+            - write:pets
+            - read:pets
+components:
+  schemas:
+    ProfileList:
+      type: object
+      properties:
+        profile_id:
+          type: string
+          example: "167064e0-316e-11ed-a261-0242ac120002"
+        name:
+          type: string
+          example: "Influencer XPTO"
+        num_followers:
+          type: integer
+          example: 955000
+        region:
+          type: string
+          example: "South America"
+        country:
+          type: string
+          example: "Brazil"
+        logo_uri:
+          type: string
+          example: "https://yt3.ggpht.com/ytc/AMLnZu_1XFfRS92xyFtPULZbRTo6vKmB-sOntUnCgodMxg=s176-c-k-c0x00ffffff-no-rj-mo"
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProfileList"
+        message:
+          type: string
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

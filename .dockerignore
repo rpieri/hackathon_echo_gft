@@ -1,0 +1,16 @@
+**/.dockerignore
+**/.editorconfig
+**/.env
+**/.git
+**/.github
+**/.gitignore
+**/.idea
+**/.vs
+**/.vscode
+**/bin
+**/Dockerfile
+**/Jenkinsfile
+**/obj
+**/*.md
+**/*.user
+**/*.yml
